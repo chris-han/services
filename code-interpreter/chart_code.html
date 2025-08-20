@@ -1,0 +1,71 @@
+<div id="chart" class="max-w-4xl mx-auto p-4"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  // 模拟后端数据，以下为查询后处理数据
+  const data = [
+    // { date: '2025-06-01', extended_cost: n, anomaly_flag: 0 or 1 }, 实际数据需替换
+  ];
+
+  // 这里填充查询到的部分示例数据 
+  const rawData = [
+    {"date":"2025-06-01","extended_cost":0.1029,"cost_ratio_change":0.89},
+    {"date":"2025-06-02","extended_cost":0.3929,"cost_ratio_change":3.42},
+    {"date":"2025-06-03","extended_cost":0.1147,"cost_ratio_change":0.42},
+    {"date":"2025-06-04","extended_cost":1.81,"cost_ratio_change":12.57},
+    {"date":"2025-06-05","extended_cost":0.11,"cost_ratio_change":0.07},
+    // 请用完整数据替换...
+  ];
+
+  // 计算 anomaly_flag
+  const processedData = rawData.map(item => ({
+    date: item.date,
+    extended_cost: item.extended_cost,
+    anomaly_flag: (item.cost_ratio_change > 2 || item.cost_ratio_change < 0.5) ? 1 : 0
+  }));
+
+  const options = {
+    chart: {
+      type: 'bar',
+      height: 400,
+      toolbar: { show: true },
+    },
+    series: [{
+      name: 'extended_cost',
+      data: processedData.map(d => d.extended_cost)
+    }],
+    xaxis: {
+      categories: processedData.map(d => d.date),
+      labels: { rotate: -45 }
+    },
+    colors: processedData.map(d => d.anomaly_flag ? '#f87171' : '#60a5fa'), // 红色异常 蓝色正常
+    tooltip: {
+      shared: true,
+      y: [
+        {
+          formatter: (val) => `Cost: ${val}`
+        }
+      ]
+    },
+    title: {
+      text: '2025年6月成本及异常检测',
+      align: 'center',
+      style: { fontSize: '18px', color: '#334155' }
+    },
+    dataLabels: {
+      enabled: false
+    }
+  };
+
+  const chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+</script>
+
+<style>
+  /* Tailwind 样式，必要时可自定义 */
+  #chart {
+    border-radius: 0.5rem; /* 例如 --radius 变量 */
+    background-color: white;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  }
+</style>

@@ -1,0 +1,38 @@
+{
+  "semanticModel": {
+    "name": "June2025CostAnomaly",
+    "source": "dbo.f_azure_billing_detail",
+    "dimensions": [
+      {
+        "name": "date",
+        "type": "date",
+        "column": "date"
+      }
+    ],
+    "measures": [
+      {
+        "name": "extended_cost",
+        "type": "sum",
+        "column": "extended_cost"
+      },
+      {
+        "name": "cost_ratio_change",
+        "type": "calculated",
+        "expression": "extended_cost / lag(extended_cost) over (order by date)"
+      },
+      {
+        "name": "anomaly_flag",
+        "type": "calculated",
+        "expression": "CASE WHEN cost_ratio_change > 2 OR cost_ratio_change < 0.5 THEN 1 ELSE 0 END"
+      }
+    ],
+    "timeDimension": "date",
+    "filters": [
+      {
+        "dimension": "date",
+        "operator": "between",
+        "values": ["2025-06-01", "2025-06-30"]
+      }
+    ]
+  }
+}

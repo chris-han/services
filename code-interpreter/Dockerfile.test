@@ -1,0 +1,15 @@
+# Test Dockerfile for Code Interpreter Service
+FROM python:3.11-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy test files
+COPY test_service.py /app/
+WORKDIR /app
+
+# Install Python requests
+RUN pip install requests
+
+# Run tests
+CMD ["python", "test_service.py"]

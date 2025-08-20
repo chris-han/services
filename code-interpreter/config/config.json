@@ -1,0 +1,24 @@
+{
+  "service": {
+    "name": "LibreChat Code Interpreter",
+    "version": "1.0.0",
+    "port": 8700,
+    "host": "0.0.0.0"
+  },
+  "security": {
+    "apiKeyHeader": "x-api-key",
+    "defaultApiKey": "default-api-key"
+  },
+  "execution": {
+    "timeout": 30,
+    "maxFileSize": 104857600,
+    "supportedLanguages": [
+      "py", "js", "ts", "c", "cpp", "java", 
+      "php", "rs", "go", "d", "f90", "r"
+    ]
+  },
+  "storage": {
+    "uploadDir": "/tmp/code-exec/uploads",
+    "executionDir": "/tmp/code-exec/sessions"
+  }
+}

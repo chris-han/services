@@ -1,0 +1,1 @@
+print("wget direct test")
