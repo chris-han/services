@@ -30,8 +30,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Install additional language tools
 RUN npm install -g typescript
 
-# Create directories for execution
-RUN mkdir -p /tmp/code-exec/uploads /tmp/code-exec/sessions
+# Create directories for execution with proper permissions
+RUN mkdir -p /tmp/code-exec/uploads /tmp/code-exec/sessions && \
+    chmod -R 777 /tmp/code-exec
 
 # Set working directory
 WORKDIR /app
