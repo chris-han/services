@@ -1,1 +1,0 @@
-print("wget direct test")
