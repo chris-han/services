@@ -88,7 +88,7 @@ services/code-interpreter/
    ```bash
    # Ubuntu/Debian
    sudo apt-get update
-   sudo apt-get install -y gcc g++ openjdk-11-jdk nodejs npm r-base php-cli golang-go rustc
+   sudo apt-get install -y gcc g++ openjdk-17-jdk nodejs npm r-base php-cli golang-go rustc
    sudo npm install -g typescript
    ```
 

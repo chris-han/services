@@ -1,5 +1,5 @@
-# Use Ubuntu 22.04 as base for better package support
-FROM ubuntu:22.04
+# Use official uv image with Python 3.13 as base
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm
 
 # Set environment variables to avoid interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,28 +7,27 @@ ENV PYTHONUNBUFFERED=1
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
     gcc \
     g++ \
-    openjdk-11-jdk \
+    openjdk-17-jdk \
     nodejs \
-    npm \
     r-base \
     php-cli \
     golang-go \
     rustc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create symbolic link for python
-RUN ln -s /usr/bin/python3 /usr/bin/python
+# Install bun for Node.js package management
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:$PATH"
 
 # Install Python dependencies
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN uv pip install --system --no-cache-dir -r requirements.txt
 
 # Install additional language tools
-RUN npm install -g typescript
+RUN bun add -g typescript
 
 # Create directories for execution with proper permissions
 RUN mkdir -p /tmp/code-exec/uploads /tmp/code-exec/sessions && \
